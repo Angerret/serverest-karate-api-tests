@@ -1,0 +1,52 @@
+name: API Tests - Karate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: 'Ambiente (dev = serverest.dev, local = ServeRest levantado en el runner)'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, local]
+
+jobs:
+  karate:
+    name: Karate (${{ github.event.inputs.ambiente || 'dev' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Levantar ServeRest local
+        if: github.event.inputs.ambiente == 'local'
+        run: |
+          npx -y serverest@latest > serverest.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -s http://localhost:3000/usuarios > /dev/null && echo "ServeRest listo" && break
+            sleep 2
+          done
+
+      - name: Ejecutar pruebas
+        run: mvn -B clean test -Dkarate.env=${{ github.event.inputs.ambiente || 'dev' }}
+
+      - name: Publicar reporte de Karate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports
+          path: target/karate-reports/
+          retention-days: 14

@@ -1,0 +1,11 @@
+[
+  { "caso": "sin nome",                   "accion": "remover",    "campo": "nome",          "valor": null,              "mensaje": "nome é obrigatório" },
+  { "caso": "sin email",                  "accion": "remover",    "campo": "email",         "valor": null,              "mensaje": "email é obrigatório" },
+  { "caso": "sin password",               "accion": "remover",    "campo": "password",      "valor": null,              "mensaje": "password é obrigatório" },
+  { "caso": "sin administrador",          "accion": "remover",    "campo": "administrador", "valor": null,              "mensaje": "administrador é obrigatório" },
+  { "caso": "nome vacío",                 "accion": "reemplazar", "campo": "nome",          "valor": "",                "mensaje": "nome não pode ficar em branco" },
+  { "caso": "email vacío",                "accion": "reemplazar", "campo": "email",         "valor": "",                "mensaje": "email não pode ficar em branco" },
+  { "caso": "password vacío",             "accion": "reemplazar", "campo": "password",      "valor": "",                "mensaje": "password não pode ficar em branco" },
+  { "caso": "email con formato inválido", "accion": "reemplazar", "campo": "email",         "valor": "correo-invalido", "mensaje": "email deve ser um email válido" },
+  { "caso": "administrador inválido",     "accion": "reemplazar", "campo": "administrador", "valor": "si",              "mensaje": "administrador deve ser 'true' ou 'false'" }
+]
